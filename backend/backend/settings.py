@@ -98,7 +98,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'projeto_ifce',
+        'NAME': 'orcamento_ifce',
         'USER': 'root',
         'PASSWORD': '123456',
         'HOST': 'localhost',
