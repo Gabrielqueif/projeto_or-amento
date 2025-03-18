@@ -8,7 +8,7 @@ class codigo_insumo(models.Model):
 
 class insumos(models.Model):
     classificação = models.CharField(max_length=100)
-    codigo_insumo = models.ForeignKey(codigo_insumo,unique=True, on_delete=models.CASCADE, primary_key=True)
+    codigo_insumo = models.OneToOneField(codigo_insumo, on_delete=models.CASCADE, primary_key=True)
     descrição_insumo = models.TextField()
     unidade = models.CharField(max_length=50)
     origem_preço = models.CharField(max_length=2)
@@ -17,12 +17,12 @@ class insumos(models.Model):
 
 class estados(models.Model):
     nome = models.CharField(max_length=50)
-    sigla = models.CharField(max_length=2)
+    sigla = models.CharField(max_length=2, primary_key=True)
     def __str__(self):
         return self.sigla
 
 class tabela(models.Model):
-    coodigo_insumo = models.ForeignKey(codigo_insumo,unique=True, on_delete=models.CASCADE, primary_key=True)
+    coodigo_insumo = models.OneToOneField(codigo_insumo, on_delete=models.CASCADE, primary_key=True)
     AC = models.FloatField(null=True)
     AL = models.FloatField(null=True)
     AP = models.FloatField(null=True)
