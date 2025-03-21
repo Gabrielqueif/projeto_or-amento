@@ -1,13 +1,10 @@
-import pymysql
+import sqlite3
 
 # Conexão com o banco de dados
-conexao = pymysql.connect(
-    host='localhost',
-    user='root',
-    passwd='123456',
-    database='orcamento_ifce'
-)
+conexao = sqlite3.connect('../backend/db.sqlite')
+
 name = 'api_estados'
+
 # Lista de estados brasileiros com suas siglas
 estados = [
     ('Acre', 'AC'),
@@ -39,19 +36,28 @@ estados = [
     ('Tocantins', 'TO')
 ]
 
-# Cursor
-cursor = conexao.cursor()
+# Criar a tabela se não existir
+with conexao:
+    cursor = conexao.cursor()
+    cursor.execute(f'''
+        CREATE TABLE IF NOT EXISTS {name} (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT NOT NULL,
+            sigla TEXT NOT NULL
+        )
+    ''')
+    conexao.commit()
 
 # Inserir dados na tabela estados
 with conexao:
-    with conexao.cursor() as cursor:
-        # Deletar dados existentes na tabela
-        cursor.execute(f'DELETE FROM {name}')
-        conexao.commit()
-        
-        # Inserir novos dados
-        for estado in estados:
-            cursor.execute(f'INSERT INTO {name} (nome, sigla) VALUES (%s, %s)', estado)
-        conexao.commit()
+    cursor = conexao.cursor()
+    
+    # Deletar dados existentes na tabela
+    cursor.execute(f'DELETE FROM {name}')
+    conexao.commit()
+    
+    # Inserir novos dados
+    cursor.executemany(f'INSERT INTO {name} (nome, sigla) VALUES (?, ?)', estados)
+    conexao.commit()
 
 print("Dados inseridos com sucesso!")
