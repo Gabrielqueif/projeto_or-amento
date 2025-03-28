@@ -1,7 +1,7 @@
 import sqlite3
 
 # Conexão com o banco de dados
-conexao = sqlite3.connect('../backend/db.sqlite')
+conexao = sqlite3.connect('../db.sqlite')
 
 name = 'api_estados'
 
